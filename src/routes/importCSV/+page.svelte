@@ -46,7 +46,7 @@
                 progressBarModal.set(true)
                 progress.set('0')
 
-                await fetch('http://localhost:5172/convert', {
+                await fetch('https://uvu-scheduling-app-server1.vercel.app/convert', {
                     method: 'POST',
                     body: formData
                 })
@@ -96,13 +96,13 @@
 }
 
 async function updateLists() {
-    const response = await fetch('http://localhost:5172/db')
+    const response = await fetch('https://uvu-scheduling-app-server1.vercel.app/db')
     const data = await response.json()
     dataStore.set(data)
 }
 
 async function updateFileName() {
-    await fetch('http://localhost:5172/fileName', {
+    await fetch('https://uvu-scheduling-app-server1.vercel.app/fileName', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
