@@ -35,7 +35,7 @@
     }
 
     // Takes the file that is uploaded and sends it to server 1 (server.ts) to be converted to JSON
-    async function insertFileToFilters() {
+async function insertFileToFilters() {
     try {
         if (selectedFile && selectedFile.name) {
             if (selectedFile.name.toLowerCase().endsWith('.csv')) {
@@ -94,6 +94,7 @@
        
     }
 }
+
 
 async function updateLists() {
     const response = await fetch('https://uvu-scheduling-app-server1.vercel.app/db')
