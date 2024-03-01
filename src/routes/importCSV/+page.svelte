@@ -97,7 +97,7 @@ async function insertFileToFilters() {
 
 
 async function updateLists() {
-    const response = await fetch('https://uvu-scheduling-app-server1.vercel.app/db')
+    const response = await fetch('https://uvu-scheduling-app-server1.vercel.app/list')
     const data = await response.json()
     dataStore.set(data)
 }
