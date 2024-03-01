@@ -46,7 +46,7 @@ async function insertFileToFilters() {
                 progressBarModal.set(true)
                 progress.set('0')
 
-                await fetch('https://uvu-scheduling-app-server1.vercel.app/convert', {
+                await fetch('https://uvu-scheduling-app-server1.vercel.app/api/convert', {
                     method: 'POST',
                     body: formData
                 })
@@ -97,13 +97,13 @@ async function insertFileToFilters() {
 
 
 async function updateLists() {
-    const response = await fetch('https://uvu-scheduling-app-server1.vercel.app/list')
+    const response = await fetch('https://uvu-scheduling-app-server1.vercel.app/api/list')
     const data = await response.json()
     dataStore.set(data)
 }
 
 async function updateFileName() {
-    await fetch('https://uvu-scheduling-app-server1.vercel.app/fileName', {
+    await fetch('https://uvu-scheduling-app-server1.vercel.app/api/fileName', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
