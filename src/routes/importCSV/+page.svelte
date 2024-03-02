@@ -73,15 +73,17 @@ async function insertFileToFilters() {
                     selectedFile = {}
                     // setTimeout(updateLists, 2000)
                     return new Promise((resolve) => {
-                        updateLists().then(resolve)
+                        setTimeout(() => {
+                            updateLists().then(resolve)
+                        }, 2000)
                     })
                 })
 
-                .then(() => {
-                    return new Promise((resolve) => {
-                        updateFileName().then(resolve)
-                    });
-                })
+                // .then(() => {
+                //     return new Promise((resolve) => {
+                //         updateFileName().then(resolve)
+                //     });
+                // })
                 .then(() => {
                     progressBarModal.set(false)
                     progressBarFinished.set(true)
