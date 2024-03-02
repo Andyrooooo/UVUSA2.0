@@ -4,6 +4,7 @@
     import Message from '../modals/modal.svelte'
     import ImportModal from '../modals/importModal.svelte'
     import {dataStore} from '../mongodbData.js'
+    // import { simulateMain } from './convertCSV2JSON'
 
     const dispatch = createEventDispatcher()
     let selectedFile = {}
@@ -38,7 +39,14 @@
 async function insertFileToFilters() {
     try {
         if (selectedFile && selectedFile.name) {
-            if (selectedFile.name.toLowerCase().endsWith('.csv')) {
+            if ($file.fileName !== 'No File') {
+                titleModal.set('File Already Exists')
+                messageModal.set('There is already a file uploaded. Please delete the current file and try again.')
+                showImportModal.set(true)
+                emptyFile = true
+                selectedFile = {}
+            }
+            else if (selectedFile.name.toLowerCase().endsWith('.csv')) {
                 const formData = new FormData()
                 formData.append('file', selectedFile)
                 file.set({fileName: selectedFile.name})
@@ -46,7 +54,8 @@ async function insertFileToFilters() {
                 progressBarModal.set(true)
                 progress.set('0')
 
-                await fetch('https://uvu-scheduling-app-server1.vercel.app/convert', {
+                // await fetch('https://uvu-scheduling-app-server1.vercel.app/convert', {
+                await fetch('http://localhost:3000/convert', {
                     method: 'POST',
                     body: formData
                 })
@@ -62,19 +71,20 @@ async function insertFileToFilters() {
                 .then(() => {
                     emptyFile = true
                     selectedFile = {}
-                    setTimeout(updateLists, 2000)
+                    // setTimeout(updateLists, 2000)
+                    return new Promise((resolve) => {
+                        updateLists().then(resolve)
+                    })
                 })
 
                 .then(() => {
-                    setTimeout(() => {
-                        updateFileName()
-                    }, 2000)
+                    return new Promise((resolve) => {
+                        updateFileName().then(resolve)
+                    });
                 })
                 .then(() => {
-                    setTimeout(() => {
-                        progressBarModal.set(false)
-                        progressBarFinished.set(true)
-                    }, 2000)
+                    progressBarModal.set(false)
+                    progressBarFinished.set(true)
                 })
 
             } else {
@@ -96,23 +106,59 @@ async function insertFileToFilters() {
 }
 
 
+// async function insertFileToFilters() {
+//     const formData = new FormData()
+//     formData.append('file', selectedFile)
+
+//     console.log(selectedFile)
+
+//     await fetch('http://localhost:3000/convert', {
+//         method: 'POST',
+//         body: formData
+//     })
+
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+//         progress.set('full')
+//         return response.json();
+//     })  
+//     .then((data) => {
+//         console.log(data)
+//     })
+
+//     .catch(error => {
+//         console.error('Error:', error)
+//     })
+
+// }
+
+
 async function updateLists() {
-    const response = await fetch('https://uvu-scheduling-app-server1.vercel.app/list')
+    // const response = await fetch('https://uvu-scheduling-app-server1.vercel.app/list')
+    const response = await fetch('http://localhost:3000/list')
     const data = await response.json()
     dataStore.set(data)
 }
 
 async function updateFileName() {
-    await fetch('https://uvu-scheduling-app-server1.vercel.app/fileName', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify($file)
-    })
-    .then(() => {
-        console.log("file was sent over")
-    })
+    try {
+        const response = await fetch('http://localhost:3000/fileName', {
+            method: 'POST',
+            body: JSON.stringify($file)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+            console.log("file was sent over");
+            return response.json()
+        }
+    } catch (error) {
+        console.log("There was an error with the fetch: ", error);
+    }
+    
 }
 
 </script>
