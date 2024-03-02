@@ -7,12 +7,12 @@ export const titleModal = writable('')
 // shows the message of the modal
 export const messageModal = writable('')
 // unhides the modal to show the modal
-export const showModal = writable(true)
+export const showModal = writable(false)
 // shows the first type of modal with one button
 export const showOneOption = writable(false)
 
 // shows the second type of modal with two buttons and different styled title
-export const showTwoOptions = writable(true)
+export const showTwoOptions = writable(false)
 
 // stores for the progress bar and its modal
 export const progress = writable('0')
