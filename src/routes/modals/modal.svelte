@@ -18,8 +18,8 @@
             deleteProgressModal.set(true)
             deleteProgressBarModal.set(true)
 
-            // fetch('https://uvu-scheduling-app-server1.vercel.app/delete', {
-            fetch('http://localhost:3000/delete', {
+            fetch('https://uvu-scheduling-app-server1.vercel.app/delete', {
+            // fetch('http://localhost:3000/delete', {
                 method: 'DELETE'
             })
 
@@ -49,7 +49,7 @@
     }
 
     async function removeName() {
-    await fetch('http://localhost:3000/deleteName', {
+    await fetch('https://uvu-scheduling-app-server1.vercel.app/deleteName', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
